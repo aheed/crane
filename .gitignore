@@ -1,0 +1,11 @@
+Library
+Logs
+Temp
+obj
+UserSettings
+.vs
+/*.sln
+/*.csproj
+.vscode
+webbuild
+.utmp
