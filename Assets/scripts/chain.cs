@@ -20,12 +20,15 @@ public class Chain
     public float simTimeFactor = 10f;
     public float linkLength = 0.5f;
     public float jakobsenIterations = 1;
+    public float speedRetention = 0.99f;
 
-    public Chain(int numLinks, Vector3 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations)
+    public Chain(int numLinks, Vector3 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
         this.simTimeFactor = simTimeFactor;
+        this.jakobsenIterations = jakobsenIterations;
+        this.speedRetention = speedRetention;
         for (int i = 0; i < numLinks; i++)
         {
             links[i] = new ChainLink(startPosition + new Vector3(i * linkLength * 0.1f, -i * linkLength, 0));
@@ -43,11 +46,13 @@ public class Chain
         links[0].position = mousePosition; // Fix the first link to the mouse position
 
         var dt = deltaTime * simTimeFactor;
+        var dtSquared = dt * dt;
+
         for (int i = 1; i < links.Length; i++) // Start from 1 to keep the first link fixed
         {
             var link = links[i];
             var currentPosition = link.position;
-            link.position = 2 * currentPosition - link.lastPosition + (dt * dt) * gravityVector;
+            link.position += (currentPosition - link.lastPosition) * speedRetention + dtSquared * gravityVector;
             link.lastPosition = currentPosition;
         }
 

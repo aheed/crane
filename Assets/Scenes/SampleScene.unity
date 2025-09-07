@@ -537,7 +537,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7745026185430503820, guid: 631aeda9755d7ff998137b35caaccf48, type: 3}
       propertyPath: simTimeFactor
-      value: 0.5
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7745026185430503820, guid: 631aeda9755d7ff998137b35caaccf48, type: 3}
+      propertyPath: speedRetention
+      value: 0.997
       objectReference: {fileID: 0}
     - target: {fileID: -7745026185430503820, guid: 631aeda9755d7ff998137b35caaccf48, type: 3}
       propertyPath: jakobsenIterations

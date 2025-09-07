@@ -6,6 +6,7 @@ public class ChainBody : MonoBehaviour
     public float linkLength = 0.5f;
     public float simTimeFactor = 10f;
     public int jakobsenIterations = 1;
+    public float speedRetention = 0.99f;
 
     private Chain chain;
     public GameObject linkPrefab;
@@ -13,7 +14,7 @@ public class ChainBody : MonoBehaviour
 
     void Start()
     {
-        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations);
+        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
