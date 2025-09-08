@@ -946,7 +946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7745026185430503820, guid: 631aeda9755d7ff998137b35caaccf48, type: 3}
       propertyPath: jakobsenIterations
-      value: 10
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2419645190131125575, guid: 631aeda9755d7ff998137b35caaccf48, type: 3}
       propertyPath: m_Name

@@ -96,6 +96,7 @@ public class Chain
 
     void ConstrainLinks()
     {
+        var firstLinkPos = links[0].position;
         for (int i = 1; i < links.Length; i++)
         {
             var prevLink = links[i - 1];
@@ -109,6 +110,7 @@ public class Chain
             link.position += direction * difference * 0.4f;
             prevLink.position -= direction * difference * 0.4f;
         }
+        links[0].position = firstLinkPos; // Re-fix the first link
     }
 
     /*void OrientLinks()
