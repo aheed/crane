@@ -9,7 +9,8 @@ public class ChainBody : MonoBehaviour
     public float speedRetention = 0.99f;
 
     private Chain chain;
-    public GameObject linkPrefab;
+    public GameObject linkPrefab1;
+    public GameObject linkPrefab2;
     private GameObject[] linkGameObjects;
 
     void Start()
@@ -18,7 +19,8 @@ public class ChainBody : MonoBehaviour
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
-            linkGameObjects[i] = Instantiate(linkPrefab, chain.links[i].position, Quaternion.identity, transform);
+            var prefab = (i % 2 == 0) ? linkPrefab1 : linkPrefab2;
+            linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
     }
 
@@ -28,6 +30,11 @@ public class ChainBody : MonoBehaviour
         for (int i = 0; i < chain.links.Length; i++)
         {
             linkGameObjects[i].transform.position = chain.links[i].position;
+        }
+
+        for (int i = 1; i < chain.links.Length; i++)
+        {
+            linkGameObjects[i].transform.rotation = Quaternion.LookRotation(Vector3.forward, chain.links[i].position - chain.links[i - 1].position);
         }
     }
 }

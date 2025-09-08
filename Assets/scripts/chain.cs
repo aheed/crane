@@ -110,4 +110,19 @@ public class Chain
             prevLink.position -= direction * difference * 0.4f;
         }
     }
+
+    /*void OrientLinks()
+    {
+        for (int i = 1; i < links.Length; i++)
+        {
+            var prevLink = links[i - 1];
+            var link = links[i];
+            var direction = (prevLink.position - link.position).normalized;
+
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            // Set the rotation of the link GameObject here if needed
+
+            link.transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
+    }*/
 }
