@@ -7,23 +7,29 @@ public class Chain
     private const int COLLIDER_BUFFER_SIZE = 8;
     private const float COLLISION_RADIUS = 0.5f; // Collision radius around each node.  Set high to avoid tunneling.
     public ChainLink[] links;
+    public ChainLink claw;
     public Vector2 gravityVector = new Vector2(0f, -9.81f);
     public float simTimeFactor = 10f;
     public float linkLength = 0.5f;
     public float jakobsenIterations = 1;
     public float speedRetention = 0.99f;
+    public float clawSpeedRetention = 0.9985f;
+    public float clawMassRatio = 10f;
 
-    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention)
+    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
         this.simTimeFactor = simTimeFactor;
         this.jakobsenIterations = jakobsenIterations;
         this.speedRetention = speedRetention;
+        this.clawMassRatio = clawMassRatio;
+        this.clawSpeedRetention = clawSpeedRetention;
         for (int i = 0; i < numLinks; i++)
         {
             links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, -i * linkLength));
         }
+        claw = new ChainLink(links[numLinks - 1].position);
     }
 
     public void Update(float deltaTime)
@@ -46,6 +52,10 @@ public class Chain
             link.position += (currentPosition - link.lastPosition) * speedRetention + dtSquared * gravityVector;
             link.lastPosition = currentPosition;
         }
+
+        var clawCurrentPosition = claw.position;
+        claw.position += (clawCurrentPosition - claw.lastPosition) * clawSpeedRetention + dtSquared * gravityVector;
+        claw.lastPosition = clawCurrentPosition;
 
         var collisions = GetCollisions();
         for (int j = 0; j < jakobsenIterations; j++)
@@ -111,6 +121,15 @@ public class Chain
             prevLink.position -= direction * difference * 0.4f;
         }
         links[0].position = firstLinkPos; // Re-fix the first link
+
+        // Constrain the last link to simulate extra mass (like a claw)
+        var lastLink = links[links.Length - 1];
+        //var secondLastLink = links[links.Length - 2];
+        var lastDirection = (lastLink.position - claw.position).normalized;
+        float lastDist = Vector2.Distance(claw.position, lastLink.position);
+        float lastDifference = lastDist - linkLength;
+        claw.position += lastDirection * lastDifference * (1f / (1f + clawMassRatio));
+        lastLink.position -= lastDirection * lastDifference * (clawMassRatio / (1f + clawMassRatio));
     }
 
     /*void OrientLinks()
