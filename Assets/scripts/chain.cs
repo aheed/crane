@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Chain
 {
@@ -34,14 +33,6 @@ public class Chain
 
     public void Update(float deltaTime)
     {
-        //var a = Mouse.current.position.ReadValue();
-        var b = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        var mousePosition = new Vector3(b.x, b.y, 0);
-        //var c = links[0].position;
-        //Debug.Log($"{a} {b} {c}");
-
-        links[0].position = mousePosition; // Fix the first link to the mouse position
-
         var dt = deltaTime * simTimeFactor;
         var dtSquared = dt * dt;
 

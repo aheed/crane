@@ -54,3 +54,20 @@ MonoBehaviour:
   linkPrefab1: {fileID: 8142331875750993268, guid: 7f5070d853f18439ab63564df0685d58, type: 3}
   linkPrefab2: {fileID: 3187824890669671531, guid: 42addb56649b3cde08a443ed5ddd0a86, type: 3}
   clawPrefab: {fileID: 6275739637172201144, guid: 741fe1f08c0478f519b9c1a57d52067e, type: 3}
+  clickAction:
+    m_Name: Click
+    m_Type: 0
+    m_ExpectedControlType: Vector2
+    m_Id: df088c8f-fccc-46d9-b75e-ae0929aadab3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1fbbdc7a-22ad-425b-a3a5-e19eb9ee5ec5
+      m_Path: <Pointer>/position
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Click
+      m_Flags: 0
+    m_Flags: 0

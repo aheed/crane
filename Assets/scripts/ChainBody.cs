@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ChainBody : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ChainBody : MonoBehaviour
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
     public GameObject clawPrefab;
+    public InputAction clickAction;
     private GameObject[] linkGameObjects;
     private GameObject clawGameObject;
 
@@ -27,6 +29,14 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
+        clickAction.Enable();
+        clickAction.performed += ctx =>
+        {
+            var mousePosition = ctx.ReadValue<Vector2>();
+            var worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
+            chain.links[0].position = worldPosition;
+            chain.links[0].lastPosition = worldPosition;
+        };
     }
 
     void FixedUpdate()
