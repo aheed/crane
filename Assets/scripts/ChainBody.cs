@@ -10,18 +10,21 @@ public class ChainBody : MonoBehaviour
     public float speedRetention = 0.99f;
     public float clawSpeedRetention = 0.9985f;
     public float clawMassRatio = 10f;
+    public float maxVerticalSpeed = 5f;
+    public float maxHorizontalSpeed = 5f;
 
     private Chain chain;
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
     public GameObject clawPrefab;
     public InputAction clickAction;
+    public InputAction moveAction;
     private GameObject[] linkGameObjects;
     private GameObject clawGameObject;
 
     void Start()
     {
-        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention);
+        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
@@ -29,14 +32,14 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
-        clickAction.Enable();
+        /*clickAction.Enable();
         clickAction.performed += ctx =>
         {
             var mousePosition = ctx.ReadValue<Vector2>();
             var worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
             chain.links[0].position = worldPosition;
             chain.links[0].lastPosition = worldPosition;
-        };
+        };*/
     }
 
     void FixedUpdate()
@@ -52,5 +55,16 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i].transform.rotation = Quaternion.LookRotation(Vector3.forward, chain.links[i].position - chain.links[i - 1].position);
         }
         clawGameObject.transform.position = chain.links[numLinks - 1].position;
+    }
+
+    // If you are interested in the value from the control that triggers an action, you can declare a parameter of type InputValue.
+    public void OnMove(InputValue value)
+    {
+        // Read value from control. The type depends on what type of controls.
+        // the action is bound to.
+        chain.SetMoveInput(value.Get<Vector2>());
+
+        // IMPORTANT:
+        // The given InputValue is only valid for the duration of the callback. Storing the InputValue references somewhere and calling Get<T>() later does not work correctly.
     }
 }

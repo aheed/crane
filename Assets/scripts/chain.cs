@@ -14,8 +14,11 @@ public class Chain
     public float speedRetention = 0.99f;
     public float clawSpeedRetention = 0.9985f;
     public float clawMassRatio = 10f;
+    public float maxVerticalSpeed = 5f;
+    public float maxHorizontalSpeed = 5f;
+    private Vector2 currentMoveInput = Vector2.zero;
 
-    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention)
+    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
@@ -31,10 +34,19 @@ public class Chain
         claw = new ChainLink(links[numLinks - 1].position);
     }
 
+    public void SetMoveInput(Vector2 input)
+    {
+        currentMoveInput = input;
+    }
+
     public void Update(float deltaTime)
     {
         var dt = deltaTime * simTimeFactor;
         var dtSquared = dt * dt;
+
+        var horizontalSpeed = currentMoveInput.x * maxHorizontalSpeed;
+        var verticalSpeed = currentMoveInput.y * maxVerticalSpeed;
+        links[0].position += new Vector2(horizontalSpeed, verticalSpeed) * deltaTime;
 
         for (int i = 1; i < links.Length; i++) // Start from 1 to keep the first link fixed
         {
