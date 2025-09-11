@@ -3,15 +3,44 @@ using UnityEngine;
 public class Claw : MonoBehaviour
 {
     public float openAngle = 45f;
+    public float offsetAngle = 15f;
+    public float openDuration = 0.6f;
     bool isOpen = true;
     GameObject leftPart;
     GameObject rightPart;
+    Tween openTween;
+    float currentAngle;
 
     void Start()
     {
         leftPart = transform.Find("claw_left").gameObject;
         rightPart = transform.Find("claw_right").gameObject;
-        UpdateAppearance();
+        currentAngle = isOpen ? openAngle : 0f;
+        openTween = CreateOpenTween(openAngle, openAngle);
+    }
+
+    Tween CreateOpenTween(float from, float to)
+    {
+        //Easing bez = Easings.CubicBezier(0.00f, 0.00f, 0.58f, 1.00f);
+        Easing bez = Easings.CubicBezier(.83f,0f,.64f,1.41f);
+        return new Tween(from, to, openDuration, OnTweenUpdate, OnTweenComplete, easing: /*Easings.EaseIn*/ bez);
+    }
+
+    void Update()
+    {
+        openTween.Update(Time.deltaTime);
+    }
+
+    void OnTweenComplete()
+    {
+        //Debug.Log("Tween complete");
+    }
+
+    void OnTweenUpdate(float value)
+    {
+        currentAngle = value;
+        leftPart.transform.localRotation = Quaternion.Euler(0f, 0f, -(currentAngle + offsetAngle));
+        rightPart.transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle + offsetAngle);
     }
 
     public void SetOpen(bool open)
@@ -19,16 +48,7 @@ public class Claw : MonoBehaviour
         if (isOpen != open)
         {
             isOpen = open;
-            UpdateAppearance();
+            openTween = CreateOpenTween(currentAngle, isOpen ? openAngle : -openAngle);
         }
-    }
-
-    void UpdateAppearance()
-    {
-        var leftRotation = isOpen ? -openAngle : openAngle;
-        var rightRotation = isOpen ? openAngle : -openAngle;
-
-        leftPart.transform.localRotation = Quaternion.Euler(0f, 0f, leftRotation);
-        rightPart.transform.localRotation = Quaternion.Euler(0f, 0f, rightRotation);
     }
 }
