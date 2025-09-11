@@ -17,6 +17,11 @@ public class Chain
     public float maxVerticalSpeed = 5f;
     public float maxHorizontalSpeed = 5f;
     private Vector2 currentMoveInput = Vector2.zero;
+    private float length;
+    private float maxLength;
+    private int activeLinks;
+    private Vector2 topPosition;
+    private float firstLinkOffsetY; //unnecessary?
 
     public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed)
     {
@@ -27,10 +32,15 @@ public class Chain
         this.speedRetention = speedRetention;
         this.clawMassRatio = clawMassRatio;
         this.clawSpeedRetention = clawSpeedRetention;
+        topPosition = startPosition;
+        maxLength = numLinks * linkLength;
+        length = maxLength / 2f;
         for (int i = 0; i < numLinks; i++)
         {
             links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, -i * linkLength));
-        }
+        }        
+        UpdateActiveLinkCount();
+        UpdateTopLinkPosition();
         claw = new ChainLink(links[numLinks - 1].position);
     }
 
@@ -45,10 +55,20 @@ public class Chain
         var dtSquared = dt * dt;
 
         var horizontalSpeed = currentMoveInput.x * maxHorizontalSpeed;
-        var verticalSpeed = currentMoveInput.y * maxVerticalSpeed;
-        links[0].position += new Vector2(horizontalSpeed, verticalSpeed) * deltaTime;
+        topPosition += new Vector2(horizontalSpeed, 0) * deltaTime;
 
-        for (int i = 1; i < links.Length; i++) // Start from 1 to keep the first link fixed
+        var verticalSpeed = currentMoveInput.y * maxVerticalSpeed;
+        if (verticalSpeed != 0f)
+        {
+            Debug.Log($"Vertical speed: {verticalSpeed} length: {length} / {maxLength}");
+            length -= verticalSpeed * deltaTime;
+            if (length > maxLength) length = maxLength;
+            if (length < linkLength) length = linkLength;
+            UpdateActiveLinkCount();
+        }
+        UpdateTopLinkPosition();
+
+        for (int i = GetTopLinkIndex(); i < links.Length; i++) // keep the top link fixed
         {
             var link = links[i];
             var currentPosition = link.position;
@@ -68,13 +88,35 @@ public class Chain
         }
     }
 
+    void UpdateActiveLinkCount()
+    {
+        int newActiveLinksCount = (int)(length / linkLength);
+        if (newActiveLinksCount != activeLinks)
+        {
+            Debug.Log($"Active links changed from {activeLinks} to {newActiveLinksCount}");
+            activeLinks = newActiveLinksCount;
+            if (newActiveLinksCount > links.Length)
+            {
+                Debug.LogError("Chain length exceeded number of links!");
+            }
+            UpdateTopLinkPosition();
+            links[GetTopLinkIndex()].lastPosition = links[GetTopLinkIndex()].position; // Prevents snapping when activating a new link
+        }
+    }
+
+    void UpdateTopLinkPosition()
+    {
+        firstLinkOffsetY = length - (activeLinks * linkLength);
+        links[GetTopLinkIndex()].position = topPosition + new Vector2(0, -firstLinkOffsetY);
+    }   
+
     List<CircularChainCollision> GetCollisions()
     {
         Collider2D[] colliderBuffer = new Collider2D[COLLIDER_BUFFER_SIZE];
         var contactFilter = new ContactFilter2D();
         contactFilter.NoFilter();
         var collisions = new List<CircularChainCollision>();
-        for (int i = 1; i < links.Length; i++) // Start from 1 to keep the first link fixed
+        for (int i = GetTopLinkIndex() + 1; i < links.Length; i++) // Start from +1 to keep the top link fixed
         {
             var overlaps = Physics2D.OverlapCircle(links[i].position, COLLISION_RADIUS, contactFilter, colliderBuffer);
             for (int j = 0; j < overlaps; j++)
@@ -107,10 +149,15 @@ public class Chain
         }
     }
 
+    int GetTopLinkIndex()
+    {
+        return links.Length - activeLinks;
+    }
+
     void ConstrainLinks()
     {
-        var firstLinkPos = links[0].position;
-        for (int i = 1; i < links.Length; i++)
+        var firstLinkPos = links[GetTopLinkIndex()].position;
+        for (int i = GetTopLinkIndex() + 1; i < links.Length; i++)
         {
             var prevLink = links[i - 1];
             var link = links[i];
@@ -123,7 +170,7 @@ public class Chain
             link.position += direction * difference * 0.4f;
             prevLink.position -= direction * difference * 0.4f;
         }
-        links[0].position = firstLinkPos; // Re-fix the first link
+        links[GetTopLinkIndex()].position = firstLinkPos; // Re-fix the first link
 
         // Constrain the last link to simulate extra mass (like a claw)
         var lastLink = links[links.Length - 1];
