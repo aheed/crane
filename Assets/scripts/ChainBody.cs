@@ -16,11 +16,12 @@ public class ChainBody : MonoBehaviour
     private Chain chain;
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
-    public GameObject clawPrefab;
+    public Claw clawPrefab;
     public InputAction clickAction;
     public InputAction moveAction;
     private GameObject[] linkGameObjects;
-    private GameObject clawGameObject;
+    private Claw clawGameObject;
+    private bool clawOpen = true;
 
     void Start()
     {
@@ -60,6 +61,7 @@ public class ChainBody : MonoBehaviour
         clawGameObject.transform.position = chain.links[numLinks - 1].position;
 
         UpdateLinkVisibility(); //expensive?
+        clawGameObject.SetOpen(clawOpen);
     }
 
     void UpdateLinkVisibility()
@@ -85,5 +87,10 @@ public class ChainBody : MonoBehaviour
 
         // IMPORTANT:
         // The given InputValue is only valid for the duration of the callback. Storing the InputValue references somewhere and calling Get<T>() later does not work correctly.
+    }
+
+    public void OnAttack()
+    {
+        clawOpen = !clawOpen;
     }
 }
