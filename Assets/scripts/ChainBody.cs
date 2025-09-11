@@ -45,16 +45,35 @@ public class ChainBody : MonoBehaviour
     void FixedUpdate()
     {
         chain.Update(Time.fixedDeltaTime);
-        for (int i = 0; i < chain.links.Length; i++)
+        var firstLinkIndex = chain.GetTopLinkIndex();
+        for (int i = firstLinkIndex; i < chain.links.Length; i++)
         {
             linkGameObjects[i].transform.position = chain.links[i].position;
         }
 
-        for (int i = 1; i < chain.links.Length; i++)
+        for (int i = firstLinkIndex + 1; i < chain.links.Length; i++)
         {
             linkGameObjects[i].transform.rotation = Quaternion.LookRotation(Vector3.forward, chain.links[i].position - chain.links[i - 1].position);
         }
+
+        linkGameObjects[firstLinkIndex].transform.rotation = Quaternion.identity;
         clawGameObject.transform.position = chain.links[numLinks - 1].position;
+
+        UpdateLinkVisibility(); //expensive?
+    }
+
+    void UpdateLinkVisibility()
+    {
+        var firstLinkIndex = chain.GetTopLinkIndex();
+        for (int i = 0; i < firstLinkIndex; i++)
+        {
+            linkGameObjects[i].SetActive(false);
+        }
+
+        for (int i = firstLinkIndex; i < numLinks; i++)
+        {
+            linkGameObjects[i].SetActive(true);
+        }
     }
 
     // If you are interested in the value from the control that triggers an action, you can declare a parameter of type InputValue.

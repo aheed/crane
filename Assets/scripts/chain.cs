@@ -60,7 +60,7 @@ public class Chain
         var verticalSpeed = currentMoveInput.y * maxVerticalSpeed;
         if (verticalSpeed != 0f)
         {
-            Debug.Log($"Vertical speed: {verticalSpeed} length: {length} / {maxLength}");
+            //Debug.Log($"Vertical speed: {verticalSpeed} length: {length} / {maxLength}");
             length -= verticalSpeed * deltaTime;
             if (length > maxLength) length = maxLength;
             if (length < linkLength) length = linkLength;
@@ -93,7 +93,7 @@ public class Chain
         int newActiveLinksCount = (int)(length / linkLength);
         if (newActiveLinksCount != activeLinks)
         {
-            Debug.Log($"Active links changed from {activeLinks} to {newActiveLinksCount}");
+            //Debug.Log($"Active links changed from {activeLinks} to {newActiveLinksCount}");
             activeLinks = newActiveLinksCount;
             if (newActiveLinksCount > links.Length)
             {
@@ -149,7 +149,7 @@ public class Chain
         }
     }
 
-    int GetTopLinkIndex()
+    public int GetTopLinkIndex()
     {
         return links.Length - activeLinks;
     }
