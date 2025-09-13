@@ -22,8 +22,9 @@ public class Chain
     private int activeLinks;
     private Vector2 topPosition;
     private float firstLinkOffsetY; //unnecessary?
+    private float linkCollisionRatio = 0.5f;
 
-    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed)
+    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
@@ -32,13 +33,16 @@ public class Chain
         this.speedRetention = speedRetention;
         this.clawMassRatio = clawMassRatio;
         this.clawSpeedRetention = clawSpeedRetention;
+        this.linkCollisionRatio = linkCollisionRatio;
+        this.maxVerticalSpeed = maxVerticalSpeed;
+        this.maxHorizontalSpeed = maxHorizontalSpeed;
         topPosition = startPosition;
         maxLength = numLinks * linkLength;
         length = maxLength / 2f;
         for (int i = 0; i < numLinks; i++)
         {
             links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, -i * linkLength));
-        }        
+        }
         UpdateActiveLinkCount();
         UpdateTopLinkPosition();
         claw = new ChainLink(links[numLinks - 1].position);
@@ -136,6 +140,7 @@ public class Chain
 
     void ApplyCollisions(List<CircularChainCollision> collisions)
     {
+        var linkCollisionDistance = (linkLength * linkCollisionRatio);
         foreach (var collision in collisions)
         {
             var collider = collision.collider;
@@ -145,7 +150,7 @@ public class Chain
             var direction = (link.position - closestPoint).normalized;
 
             float dist = Vector2.Distance(link.position, closestPoint);
-            var linkCollisionDistance = (linkLength * 0.5f);
+
             if (dist < linkCollisionDistance)
             {
                 float difference = linkCollisionDistance - dist;

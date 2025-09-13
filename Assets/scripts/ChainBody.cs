@@ -15,6 +15,7 @@ public class ChainBody : MonoBehaviour
     public float drumOffsetX = 0f;
     public float drumOffsetY = -0.5f;
     public float drumRadius = 1f;
+    public float linkCollisionRatio = 0.5f;
 
     private Chain chain;
     public GameObject linkPrefab1;
@@ -29,7 +30,7 @@ public class ChainBody : MonoBehaviour
 
     void Start()
     {
-        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed);
+        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
