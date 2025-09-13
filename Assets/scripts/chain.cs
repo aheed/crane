@@ -88,6 +88,11 @@ public class Chain
         }
     }
 
+    public float Length
+    {
+        get { return length; }
+    }
+
     void UpdateActiveLinkCount()
     {
         int newActiveLinksCount = (int)(length / linkLength);

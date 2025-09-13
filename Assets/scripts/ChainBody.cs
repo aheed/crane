@@ -12,6 +12,9 @@ public class ChainBody : MonoBehaviour
     public float clawMassRatio = 10f;
     public float maxVerticalSpeed = 5f;
     public float maxHorizontalSpeed = 5f;
+    public float drumOffsetX = 0f;
+    public float drumOffsetY = -0.5f;
+    public float drumRadius = 1f;
 
     private Chain chain;
     public GameObject linkPrefab1;
@@ -21,6 +24,7 @@ public class ChainBody : MonoBehaviour
     public InputAction moveAction;
     private GameObject[] linkGameObjects;
     private Claw clawGameObject;
+    private GameObject drumGameObject;
     private bool clawOpen = true;
 
     void Start()
@@ -33,14 +37,7 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
-        /*clickAction.Enable();
-        clickAction.performed += ctx =>
-        {
-            var mousePosition = ctx.ReadValue<Vector2>();
-            var worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mousePosition.x, mousePosition.y, 0));
-            chain.links[0].position = worldPosition;
-            chain.links[0].lastPosition = worldPosition;
-        };*/
+        drumGameObject = transform.Find("drum").gameObject;
     }
 
     void FixedUpdate()
@@ -62,6 +59,11 @@ public class ChainBody : MonoBehaviour
 
         UpdateLinkVisibility(); //expensive?
         clawGameObject.SetOpen(clawOpen);
+
+        var topPos = linkGameObjects[firstLinkIndex].transform.position;
+        drumGameObject.transform.position = new Vector3(topPos.x + drumOffsetX, transform.position.y + drumOffsetY, 0);
+        var drumAngle = chain.Length / (2 * UnityEngine.Mathf.PI * drumRadius) * 360f;
+        drumGameObject.transform.rotation = Quaternion.Euler(0, 0, drumAngle);
     }
 
     void UpdateLinkVisibility()
