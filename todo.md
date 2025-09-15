@@ -17,3 +17,19 @@ Another weird thing: c.otherCollider is the collider on this object in OnCollisi
 Potential problem:
 Edge colliders do not collide with other edge colliders
 
+
+claw detector and grabable objects:
+ separate layer: grab
+   grabable object is a "shadow" of the visible object with same geometry, separate layer
+     => jaws and chain will interact with the visible object, detector only with grabable "shadow"
+       Possible to achieve the same with collider layer overrides?
+ rigibody2D
+   necessary for the claw detector, not for the grabable object
+ kinematic
+ full kinematic contacts
+   OnCollisionEnter2D is not triggered but there is a list of contacts during overlap
+ on closing jaws: check for contacts
+   If contact pick up contacted grabable.
+     Keep it's position locked to claw
+     Adjust claw's mass ratio
+     Disable appropriate parts of grabbed object to prevent the jaws from reacting in a weird way.

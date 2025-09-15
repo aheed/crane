@@ -56,8 +56,8 @@ public class Claw : MonoBehaviour
     void OnCollisionEnter2D(Collision2D c)
     {
         Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
-        Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
-        Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
+        //Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
+        //Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
     }
 
     void OnCollisionExit2D(Collision2D c)
