@@ -32,4 +32,14 @@ claw detector and grabable objects:
    If contact pick up contacted grabable.
      Keep it's position locked to claw
      Adjust claw's mass ratio
-     Disable appropriate parts of grabbed object to prevent the jaws from reacting in a weird way.
+     (Disable appropriate parts of grabbed object to prevent the jaws from reacting in a weird way.)
+     
+Introduce new interface IGrabable?
+  GetGrabbedObject (usually parent)
+  GetGrabPoint/object/offset
+  Grab
+    Turn off some colliders, like the visible part of grabable object
+      Reduces risk of weird chain or claw interaction behavior
+    Turn off physics if applicable
+  Release
+  GetMassRatio (compared to a chain link)

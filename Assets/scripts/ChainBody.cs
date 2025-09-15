@@ -28,6 +28,7 @@ public class ChainBody : MonoBehaviour
     private Rigidbody2D clawRigidbody;
     private GameObject drumGameObject;
     private bool clawOpen = true;
+    private GameObject grabbedObject = null;
 
     void Start()
     {
@@ -69,6 +70,14 @@ public class ChainBody : MonoBehaviour
         drumGameObject.transform.position = new Vector3(topPos.x + drumOffsetX, transform.position.y + drumOffsetY, 0);
         var drumAngle = chain.Length / (2 * UnityEngine.Mathf.PI * drumRadius) * 360f;
         drumGameObject.transform.rotation = Quaternion.Euler(0, 0, drumAngle);
+
+        if (grabbedObject != null)
+        {
+            var grabOffset = new Vector3(0, clawGameObject.grabOffsetY, 0);
+            grabbedObject.transform.SetPositionAndRotation(
+                clawGameObject.transform.position + grabOffset,
+                clawGameObject.transform.rotation);
+        }
     }
 
     void UpdateLinkVisibility()
@@ -99,5 +108,24 @@ public class ChainBody : MonoBehaviour
     public void OnAttack()
     {
         clawOpen = !clawOpen;
+        if (!clawOpen)
+        {
+            grabbedObject = clawGameObject.TryGrabObject();
+            if (grabbedObject != null)
+            {
+                // Assume we want the root object if we grabbed a child object
+                if (grabbedObject.transform.parent != null)
+                    grabbedObject = grabbedObject.transform.parent.gameObject;
+                Debug.Log("Grabbed object: " + grabbedObject.name);
+            }
+        }
+        else
+        {
+            if (grabbedObject != null)
+            {
+                Debug.Log("Released object: " + grabbedObject.name);
+                grabbedObject = null;
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Claw : MonoBehaviour
@@ -5,11 +6,13 @@ public class Claw : MonoBehaviour
     public float openAngle = 45f;
     public float offsetAngle = 15f;
     public float openDuration = 0.6f;
+    public float grabOffsetY = -0.2f;
     bool isOpen = true;
     GameObject leftPart;
     GameObject rightPart;
     Tween openTween;
     float currentAngle;
+    Collider2D grabDetectorCollider;
 
     void Start()
     {
@@ -17,6 +20,7 @@ public class Claw : MonoBehaviour
         rightPart = transform.Find("claw_right").gameObject;
         currentAngle = isOpen ? openAngle : 0f;
         openTween = CreateOpenTween(openAngle, openAngle);
+        grabDetectorCollider = transform.Find("claw_detector").GetComponent<Collider2D>();
     }
 
     Tween CreateOpenTween(float from, float to)
@@ -55,13 +59,28 @@ public class Claw : MonoBehaviour
     // Print on collision with another object
     void OnCollisionEnter2D(Collision2D c)
     {
-        Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
+        //Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
         //Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
         //Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
     }
 
     void OnCollisionExit2D(Collision2D c)
     {
-        Debug.Log($"Claw collision exit with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
+        //Debug.Log($"Claw collision exit with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
+    }
+
+    public GameObject TryGrabObject()
+    {
+        var contactingColliders = new List<Collider2D>();
+        var numContacts = grabDetectorCollider.GetContacts(contactingColliders);
+        if (numContacts <= 0)
+        {
+            return null;
+        }
+        
+        Debug.Log($"Claw contacting {numContacts} colliders");
+
+        // Grab the first one
+        return contactingColliders[0].gameObject;
     }
 }
