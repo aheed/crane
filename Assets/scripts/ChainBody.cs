@@ -25,6 +25,7 @@ public class ChainBody : MonoBehaviour
     public InputAction moveAction;
     private GameObject[] linkGameObjects;
     private Claw clawGameObject;
+    private Rigidbody2D clawRigidbody;
     private GameObject drumGameObject;
     private bool clawOpen = true;
 
@@ -38,11 +39,13 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
+        clawRigidbody = clawGameObject.GetComponent<Rigidbody2D>();
         drumGameObject = transform.Find("drum").gameObject;
     }
 
     void FixedUpdate()
     {
+        chain.ClawPosition = clawGameObject.transform.position;
         chain.Update(Time.fixedDeltaTime);
         var firstLinkIndex = chain.GetTopLinkIndex();
         for (int i = firstLinkIndex; i < chain.links.Length; i++)
@@ -56,7 +59,8 @@ public class ChainBody : MonoBehaviour
         }
 
         linkGameObjects[firstLinkIndex].transform.rotation = Quaternion.identity;
-        clawGameObject.transform.position = chain.links[numLinks - 1].position;
+        clawGameObject.transform.position = chain.ClawPosition;
+        clawRigidbody.linearVelocity = Vector2.zero;
 
         UpdateLinkVisibility(); //expensive?
         clawGameObject.SetOpen(clawOpen);

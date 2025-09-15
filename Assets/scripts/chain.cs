@@ -98,6 +98,12 @@ public class Chain
         get { return length; }
     }
 
+    public Vector2 ClawPosition
+    {
+        get { return claw.position; }
+        set { claw.position = value; }
+    }
+
     void UpdateActiveLinkCount()
     {
         int newActiveLinksCount = (int)(length / linkLength);
