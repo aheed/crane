@@ -22,7 +22,7 @@ public class Claw : MonoBehaviour
     Tween CreateOpenTween(float from, float to)
     {
         //Easing bez = Easings.CubicBezier(0.00f, 0.00f, 0.58f, 1.00f);
-        Easing bez = Easings.CubicBezier(.83f,0f,.64f,1.41f);
+        Easing bez = Easings.CubicBezier(.83f, 0f, .64f, 1.41f);
         return new Tween(from, to, openDuration, OnTweenUpdate, OnTweenComplete, easing: /*Easings.EaseIn*/ bez);
     }
 
@@ -50,5 +50,18 @@ public class Claw : MonoBehaviour
             isOpen = open;
             openTween = CreateOpenTween(currentAngle, isOpen ? openAngle : -openAngle);
         }
+    }
+
+    // Print on collision with another object
+    void OnCollisionEnter2D(Collision2D c)
+    {
+        Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
+        Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
+        Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
+    }
+
+    void OnCollisionExit2D(Collision2D c)
+    {
+        Debug.Log($"Claw collision exit with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
     }
 }

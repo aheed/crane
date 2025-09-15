@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,10 +39,10 @@ public class Chain
         this.maxHorizontalSpeed = maxHorizontalSpeed;
         topPosition = startPosition;
         maxLength = numLinks * linkLength;
-        length = maxLength / 2f;
+        length = maxLength / 4f;
         for (int i = 0; i < numLinks; i++)
         {
-            links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, -i * linkLength));
+            links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, 0f));  //-i * linkLength));
         }
         UpdateActiveLinkCount();
         UpdateTopLinkPosition();
@@ -124,6 +125,7 @@ public class Chain
         Collider2D[] colliderBuffer = new Collider2D[COLLIDER_BUFFER_SIZE];
         var contactFilter = new ContactFilter2D();
         contactFilter.NoFilter();
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("chain")));
         var collisions = new List<CircularChainCollision>();
         for (int i = GetTopLinkIndex() + 1; i < links.Length; i++) // Start from +1 to keep the top link fixed
         {
@@ -131,6 +133,7 @@ public class Chain
             for (int j = 0; j < overlaps; j++)
             {
                 var collider = colliderBuffer[j];
+                if (collider.gameObject.name.StartsWith("claw", StringComparison.OrdinalIgnoreCase)) continue;
                 collisions.Add(new CircularChainCollision { collider = collider, link = links[i], colliderRadius = collider.bounds.extents.magnitude });
             }
         }

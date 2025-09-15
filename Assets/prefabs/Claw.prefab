@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7460624144652592966}
   - component: {fileID: 257531187598126731}
+  - component: {fileID: 5921911308401477975}
   m_Layer: 0
   m_Name: claw_left
   m_TagString: Untagged
@@ -87,6 +88,69 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!68 &5921911308401477975
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2315259284118439260}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.63545114, y: -0.04947941}
+  - {x: -0.42107397, y: 0.13184036}
+  - {x: -0.21488595, y: 0.21747503}
+  - {x: 0.020430718, y: 0.23960344}
+  - {x: 0.15640114, y: 0.20485498}
+  - {x: 0.22929065, y: 0.1036724}
+  - {x: 0.24733649, y: -0.04246743}
+  - {x: 0.17371222, y: -0.20056304}
+  - {x: 0.07819331, y: -0.2899801}
+  - {x: -0.1615749, y: -0.3639241}
+  - {x: -0.29951984, y: -0.51963073}
+  - {x: -0.34819233, y: -0.6987078}
+  - {x: -0.3461972, y: -0.84642446}
+  - {x: -0.31696433, y: -1.0070858}
+  - {x: -0.21406741, y: -1.1510519}
+  - {x: -0.2340091, y: -1.1959442}
+  - {x: -0.31770843, y: -1.198448}
+  - {x: -0.5738588, y: -1.0302056}
+  - {x: -0.746329, y: -0.786669}
+  - {x: -0.8027502, y: -0.49437913}
+  - {x: -0.7381296, y: -0.20515363}
+  - {x: -0.6358502, y: -0.049922198}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1 &5735580304903242396
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5224854079938585947}
   - component: {fileID: 7211354737307121169}
+  - component: {fileID: 3303695328936619244}
   m_Layer: 0
   m_Name: claw_right
   m_TagString: Untagged
@@ -174,6 +239,136 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!68 &3303695328936619244
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5735580304903242396}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: 0.09234226, y: 0.22779307}
+  - {x: 0.25448465, y: 0.1785664}
+  - {x: 0.48406112, y: 0.051585883}
+  - {x: 0.68694943, y: -0.190569}
+  - {x: 0.7477686, y: -0.4270158}
+  - {x: 0.74057746, y: -0.6485877}
+  - {x: 0.62847686, y: -0.9065683}
+  - {x: 0.43965232, y: -1.1042674}
+  - {x: 0.22324727, y: -1.2007838}
+  - {x: 0.18075633, y: -1.1565759}
+  - {x: 0.26695722, y: -0.97333944}
+  - {x: 0.31410062, y: -0.7824485}
+  - {x: 0.270118, y: -0.58155495}
+  - {x: 0.17323339, y: -0.43900985}
+  - {x: 0.063893616, y: -0.3621784}
+  - {x: -0.2555886, y: -0.28454104}
+  - {x: -0.3317242, y: -0.1749064}
+  - {x: -0.34879464, y: -0.007839462}
+  - {x: -0.26952544, y: 0.16827138}
+  - {x: -0.1135833, y: 0.22826388}
+  - {x: 0.09474264, y: 0.22496171}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
+--- !u!1 &6954309142179437464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 105063738446865363}
+  - component: {fileID: 4156753239596441663}
+  m_Layer: 0
+  m_Name: claw_detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &105063738446865363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954309142179437464}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8589560101442434124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &4156753239596441663
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6954309142179437464}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.5}
+  m_Radius: 0.45
 --- !u!1 &7061689800616335700
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +379,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8589560101442434124}
   - component: {fileID: 9156476033305058551}
+  - component: {fileID: 8605956001928453943}
+  - component: {fileID: 1089484017576347751}
   m_Layer: 0
   m_Name: Claw
   m_TagString: Untagged
@@ -206,6 +403,7 @@ Transform:
   m_Children:
   - {fileID: 7460624144652592966}
   - {fileID: 5224854079938585947}
+  - {fileID: 105063738446865363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9156476033305058551
@@ -223,3 +421,75 @@ MonoBehaviour:
   openAngle: 15
   offsetAngle: 20
   openDuration: 0.6
+--- !u!50 &8605956001928453943
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061689800616335700}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!66 &1089484017576347751
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061689800616335700}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 1
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths: []
+  m_CompositePaths:
+    m_Paths: []
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+  m_UseDelaunayMesh: 0
+  m_CompositeGameObject: {fileID: 7061689800616335700}

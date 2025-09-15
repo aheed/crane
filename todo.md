@@ -8,3 +8,8 @@ Idea for reducing tunneling (getting stuck inside collider): let every link go b
 
 Improved chain link orientation:
   Direction from next link bottom edge to previous link top edge
+
+---
+I don't understand composite colliders :(
+
+Another weird thing: c.otherCollider is the collider on this object in OnCollisionEnter2D(Collision2D c). c.collider is the object you collided with!!
