@@ -29,6 +29,7 @@ public class ChainBody : MonoBehaviour
     private GameObject drumGameObject;
     private bool clawOpen = true;
     private GameObject grabbedObject = null;
+    private Vector3 grabbedObjectOffset;
 
     void Start()
     {
@@ -73,7 +74,8 @@ public class ChainBody : MonoBehaviour
 
         if (grabbedObject != null)
         {
-            var grabOffset = new Vector3(0, clawGameObject.grabOffsetY, 0);
+            var grabOffset = new Vector3(0, clawGameObject.grabOffsetY, 0)
+                + grabbedObjectOffset;
             grabbedObject.transform.SetPositionAndRotation(
                 clawGameObject.transform.position + grabOffset,
                 clawGameObject.transform.rotation);
@@ -110,13 +112,15 @@ public class ChainBody : MonoBehaviour
         clawOpen = !clawOpen;
         if (!clawOpen)
         {
-            grabbedObject = clawGameObject.TryGrabObject();
-            if (grabbedObject != null)
+            var grabbedHandle = clawGameObject.TryGrabObject();
+            if (grabbedHandle != null)
             {
-                // Assume we want the root object if we grabbed a child object
-                if (grabbedObject.transform.parent != null)
-                    grabbedObject = grabbedObject.transform.parent.gameObject;
+                IGrabQueryable grabQueryable = grabbedHandle.GetComponent<IGrabQueryable>();
+                var grabbable = grabQueryable.GetGrabbable();
+                grabbedObject = grabbable.GetGrabbedObject();
+                grabbable.Grab();
                 Debug.Log("Grabbed object: " + grabbedObject.name);
+                grabbedObjectOffset = grabbable.GetGrabOffset();
             }
         }
         else
@@ -124,6 +128,7 @@ public class ChainBody : MonoBehaviour
             if (grabbedObject != null)
             {
                 Debug.Log("Released object: " + grabbedObject.name);
+                grabbedObject.GetComponent<IGrabbable>().Release();
                 grabbedObject = null;
             }
         }

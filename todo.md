@@ -24,22 +24,25 @@ claw detector and grabable objects:
      => jaws and chain will interact with the visible object, detector only with grabable "shadow"
        Possible to achieve the same with collider layer overrides?
  rigibody2D
-   necessary for the claw detector, not for the grabable object
+   necessary for the claw detector, not for the grabbable object
  kinematic
  full kinematic contacts
    OnCollisionEnter2D is not triggered but there is a list of contacts during overlap
  on closing jaws: check for contacts
-   If contact pick up contacted grabable.
+   If contact pick up contacted grabbable.
      Keep it's position locked to claw
      Adjust claw's mass ratio
      (Disable appropriate parts of grabbed object to prevent the jaws from reacting in a weird way.)
      
-Introduce new interface IGrabable?
+Introduce new interface IGrabbable?*
   GetGrabbedObject (usually parent)
   GetGrabPoint/object/offset
   Grab
-    Turn off some colliders, like the visible part of grabable object
+    Turn off some colliders, like the visible part of grabbable object
       Reduces risk of weird chain or claw interaction behavior
     Turn off physics if applicable
   Release
   GetMassRatio (compared to a chain link)
+
+State machine for (grabbing/)ungrabbing.
+  Go through (most of) release animation first, then release. Otherwise multiple collisions causes jerkiness during release animation.
