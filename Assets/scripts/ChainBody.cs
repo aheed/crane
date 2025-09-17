@@ -41,6 +41,8 @@ public class ChainBody : MonoBehaviour
             linkGameObjects[i] = Instantiate(prefab, chain.links[i].position, Quaternion.identity, transform);
         }
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
+        clawGameObject.SetOnOpenCallback(OnOpenClawCallback);
+        clawGameObject.SetOnCloseCallback(OnCloseClawCallback);
         clawRigidbody = clawGameObject.GetComponent<Rigidbody2D>();
         drumGameObject = transform.Find("drum").gameObject;
     }
@@ -110,27 +112,31 @@ public class ChainBody : MonoBehaviour
     public void OnAttack()
     {
         clawOpen = !clawOpen;
-        if (!clawOpen)
+    }
+
+    void OnOpenClawCallback()
+    {
+        Debug.Log("Claw almost opened");
+        if (grabbedObject != null)
         {
-            var grabbedHandle = clawGameObject.TryGrabObject();
-            if (grabbedHandle != null)
-            {
-                IGrabQueryable grabQueryable = grabbedHandle.GetComponent<IGrabQueryable>();
-                var grabbable = grabQueryable.GetGrabbable();
-                grabbedObject = grabbable.GetGrabbedObject();
-                grabbable.Grab();
-                Debug.Log("Grabbed object: " + grabbedObject.name);
-                grabbedObjectOffset = grabbable.GetGrabOffset();
-            }
+            Debug.Log("Released object: " + grabbedObject.name);
+            grabbedObject.GetComponent<IGrabbable>().Release();
+            grabbedObject = null;
         }
-        else
+    }
+
+    void OnCloseClawCallback()
+    {
+        Debug.Log("Claw almost closed");
+        var grabbedHandle = clawGameObject.TryGrabObject();
+        if (grabbedHandle != null)
         {
-            if (grabbedObject != null)
-            {
-                Debug.Log("Released object: " + grabbedObject.name);
-                grabbedObject.GetComponent<IGrabbable>().Release();
-                grabbedObject = null;
-            }
+            IGrabQueryable grabQueryable = grabbedHandle.GetComponent<IGrabQueryable>();
+            var grabbable = grabQueryable.GetGrabbable();
+            grabbedObject = grabbable.GetGrabbedObject();
+            grabbable.Grab();
+            Debug.Log("Grabbed object: " + grabbedObject.name);
+            grabbedObjectOffset = grabbable.GetGrabOffset();
         }
     }
 }

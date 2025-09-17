@@ -387,8 +387,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.5}
-  m_Radius: 0.45
+  m_Offset: {x: 0, y: -0.35503536}
+  m_Radius: 0.38092905
 --- !u!50 &1844709237965008447
 Rigidbody2D:
   serializedVersion: 5
@@ -468,7 +468,8 @@ MonoBehaviour:
   openAngle: 15
   offsetAngle: 20
   openDuration: 0.6
-  grabOffsetY: -1.1
+  grabOffsetY: -1.35
+  openCompleteFraction: 0.7
 --- !u!50 &8605956001928453943
 Rigidbody2D:
   serializedVersion: 5

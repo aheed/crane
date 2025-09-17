@@ -1,18 +1,24 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Claw : MonoBehaviour
 {
+    static readonly float CompleteThresholdOverflow = 100000f;
     public float openAngle = 45f;
     public float offsetAngle = 15f;
     public float openDuration = 0.6f;
     public float grabOffsetY = -0.2f;
+    public float openCompleteFraction = 0.9f;
     bool isOpen = true;
     GameObject leftPart;
     GameObject rightPart;
     Tween openTween;
     float currentAngle;
     Collider2D grabDetectorCollider;
+    Action onOpenCallback;
+    Action onCloseCallback;
+    private float openCompleteThreshold = CompleteThresholdOverflow;
 
     void Start()
     {
@@ -37,7 +43,7 @@ public class Claw : MonoBehaviour
 
     void OnTweenComplete()
     {
-        //Debug.Log("Tween complete");
+        Debug.Log("Tween complete");
     }
 
     void OnTweenUpdate(float value)
@@ -45,6 +51,17 @@ public class Claw : MonoBehaviour
         currentAngle = value;
         leftPart.transform.localRotation = Quaternion.Euler(0f, 0f, -(currentAngle + offsetAngle));
         rightPart.transform.localRotation = Quaternion.Euler(0f, 0f, currentAngle + offsetAngle);
+        var signMultiplier = isOpen ? 1 : -1;
+        if (isOpen && currentAngle >= openCompleteThreshold)
+        {
+            openCompleteThreshold = CompleteThresholdOverflow;
+            onOpenCallback?.Invoke();
+        }
+        else if (!isOpen && currentAngle <= openCompleteThreshold)
+        {
+            openCompleteThreshold = -CompleteThresholdOverflow;
+            onCloseCallback?.Invoke();
+        }
     }
 
     public void SetOpen(bool open)
@@ -53,7 +70,18 @@ public class Claw : MonoBehaviour
         {
             isOpen = open;
             openTween = CreateOpenTween(currentAngle, isOpen ? openAngle : -openAngle);
+            openCompleteThreshold = openAngle * (2 * openCompleteFraction - 1) * (isOpen ? 1 : -1);
         }
+    }
+
+    public void SetOnOpenCallback(Action onOpen)
+    {
+        onOpenCallback = onOpen;
+    }
+
+    public void SetOnCloseCallback(Action onClose)
+    {
+        onCloseCallback = onClose;
     }
 
     // Print on collision with another object
