@@ -59,6 +59,7 @@ MonoBehaviour:
   drumOffsetY: 0.2
   drumRadius: 0.7
   linkCollisionRatio: 0.7
+  maxOffsetX: 7.5
   linkPrefab1: {fileID: 8142331875750993268, guid: 7f5070d853f18439ab63564df0685d58, type: 3}
   linkPrefab2: {fileID: 3187824890669671531, guid: 42addb56649b3cde08a443ed5ddd0a86, type: 3}
   clawPrefab: {fileID: 9156476033305058551, guid: a0251aa04c2a97366ac72c549d707c5d, type: 3}

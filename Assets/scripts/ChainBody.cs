@@ -16,6 +16,7 @@ public class ChainBody : MonoBehaviour
     public float drumOffsetY = -0.5f;
     public float drumRadius = 1f;
     public float linkCollisionRatio = 0.5f;
+    public float maxOffsetX = 6f;
 
     private Chain chain;
     public GameObject linkPrefab1;
@@ -33,7 +34,7 @@ public class ChainBody : MonoBehaviour
 
     void Start()
     {
-        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio);
+        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio, maxOffsetX);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
@@ -120,7 +121,7 @@ public class ChainBody : MonoBehaviour
         if (grabbedObject != null)
         {
             Debug.Log("Released object: " + grabbedObject.name);
-            grabbedObject.GetComponent<IGrabbable>().Release();
+            grabbedObject.GetComponent<IGrabbable>().Release(chain.GetClawVelocity());
             grabbedObject = null;
         }
     }

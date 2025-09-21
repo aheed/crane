@@ -17,6 +17,7 @@ public class Chain
     public float clawMassRatio = 10f;
     public float maxVerticalSpeed = 5f;
     public float maxHorizontalSpeed = 5f;
+    public float maxOffsetX = 5f;
     private Vector2 currentMoveInput = Vector2.zero;
     private float length;
     private float maxLength;
@@ -25,7 +26,7 @@ public class Chain
     private float firstLinkOffsetY; //unnecessary?
     private float linkCollisionRatio = 0.5f;
 
-    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio)
+    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio, float maxOffsetX)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
@@ -37,6 +38,7 @@ public class Chain
         this.linkCollisionRatio = linkCollisionRatio;
         this.maxVerticalSpeed = maxVerticalSpeed;
         this.maxHorizontalSpeed = maxHorizontalSpeed;
+        this.maxOffsetX = maxOffsetX;
         topPosition = startPosition;
         maxLength = numLinks * linkLength;
         length = maxLength / 4f;
@@ -61,6 +63,8 @@ public class Chain
 
         var horizontalSpeed = currentMoveInput.x * maxHorizontalSpeed;
         topPosition += new Vector2(horizontalSpeed, 0) * deltaTime;
+        if (topPosition.x > maxOffsetX) topPosition.x = maxOffsetX;
+        if (topPosition.x < -maxOffsetX) topPosition.x = -maxOffsetX;
 
         var verticalSpeed = currentMoveInput.y * maxVerticalSpeed;
         if (verticalSpeed != 0f)
@@ -91,6 +95,11 @@ public class Chain
             ConstrainLinks();
             ApplyCollisions(collisions);
         }
+    }
+
+    public Vector2 GetClawVelocity()
+    {
+        return (claw.position - claw.lastPosition) / Time.fixedDeltaTime;
     }
 
     public float Length

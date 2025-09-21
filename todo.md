@@ -46,3 +46,33 @@ Introduce new interface IGrabbable?*
 
 State machine for (grabbing/)ungrabbing.
   Go through (most of) release animation first, then release. Otherwise multiple collisions causes jerkiness during release animation.
+
+Levels
+  Do not make the player decide difficulty level explicitly.
+    Some levels can return as near-carbon-copies of earlier levels, but harder
+
+Improvements
+  Do not make the player choose upgrades explicitly. Somewhat random upgrade "cards" must be collected to have a chance to succeed on later levels.
+
+
+Fans, magnets, vertical flappy-birds
+  Fans affect the chain
+  magnets only affects cargo or claw
+   Example: magnet only affects cargo => you might need to carry a magnetic marble to get through an opening with the claw. Then drop it and collect your actual target marble.
+   Example: Need to push a magnetic marble even though it's behind a wall
+
+Underwater levels with buoyancy related challenges. Need for the claw to travel upward.
+
+Parachutes?
+
+Bank shots.
+  Need to drop a marble at the correct height/position to get the right bounce.
+
+Explosions
+  Place bombs at appropriate places to get a reaction
+
+Drop a non-goal marble into a shute to push the goal marble into position
+
+Zombies pushing whatever is placed in front of them.
+
+

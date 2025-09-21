@@ -10,6 +10,6 @@ public interface IGrabbable
     GameObject GetGrabbedObject();
     Vector3 GetGrabOffset();
     void Grab();
-    void Release();
+    void Release(Vector2 velocity);
     float GetMassRatio();
 }
