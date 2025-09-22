@@ -9,7 +9,7 @@ public class Marble : MonoBehaviour, IGrabbable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        ungrabbableCollider = transform.Find("visible").GetComponent<Collider2D>();
+        ungrabbableCollider = transform.Find("marble_visible").GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
 

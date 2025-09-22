@@ -75,4 +75,15 @@ Drop a non-goal marble into a shute to push the goal marble into position
 
 Zombies pushing whatever is placed in front of them.
 
+Drop a marble at speed to make it roll over a bump.
+
+Throw the marble through a basketball hoop
+
+Game idea:
+Scorched Earths
+  Like Scorched Earth, but players are at different planets. Shots are deflected by the gravity of other planets and moons in interplanetary space between players.
+
+Problem:
+why does the claw interact with Finish collider (isTrigger)?
+  Compare to marble
 

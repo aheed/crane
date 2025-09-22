@@ -25,6 +25,7 @@ public class Chain
     private Vector2 topPosition;
     private float firstLinkOffsetY; //unnecessary?
     private float linkCollisionRatio = 0.5f;
+    private float latestDeltaT = 0f;
 
     public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio, float maxOffsetX)
     {
@@ -58,8 +59,8 @@ public class Chain
 
     public void Update(float deltaTime)
     {
-        var dt = deltaTime * simTimeFactor;
-        var dtSquared = dt * dt;
+        latestDeltaT = deltaTime * simTimeFactor;
+        var dtSquared = latestDeltaT * latestDeltaT;
 
         var horizontalSpeed = currentMoveInput.x * maxHorizontalSpeed;
         topPosition += new Vector2(horizontalSpeed, 0) * deltaTime;
@@ -99,7 +100,8 @@ public class Chain
 
     public Vector2 GetClawVelocity()
     {
-        return (claw.position - claw.lastPosition) / Time.fixedDeltaTime;
+        if (latestDeltaT == 0f) return Vector2.zero;        
+        return (claw.position - claw.lastPosition) / latestDeltaT;
     }
 
     public float Length

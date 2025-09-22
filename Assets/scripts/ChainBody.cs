@@ -112,7 +112,19 @@ public class ChainBody : MonoBehaviour
 
     public void OnAttack()
     {
-        clawOpen = !clawOpen;
+        var gameState = GameState.GetInstance();
+        switch (gameState.GetStateContents().gameStatus)
+        {
+            case GameStatus.FINISHED:
+            case GameStatus.DEAD:
+                gameState.ReportEvent(GameEvent.RESTART_REQUESTED);
+                break;
+            case GameStatus.PLAYING:
+                clawOpen = !clawOpen;
+                break;
+            default:
+                break;
+        }
     }
 
     void OnOpenClawCallback()

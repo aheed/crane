@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4523172282566792148}
   - component: {fileID: 5511781204833554730}
   m_Layer: 0
-  m_Name: visible
+  m_Name: marble_visible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 2531465842775216484}
   - component: {fileID: 7447617568323118745}
   m_Layer: 7
-  m_Name: Grabbable
+  m_Name: marble_grabbable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
