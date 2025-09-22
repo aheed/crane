@@ -17,13 +17,13 @@ public class ChainBody : MonoBehaviour
     public float drumRadius = 1f;
     public float linkCollisionRatio = 0.5f;
     public float maxOffsetX = 6f;
-
     private Chain chain;
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
     public Claw clawPrefab;
-    public InputAction clickAction;
-    public InputAction moveAction;
+    /*public InputAction clickAction;
+    public InputAction moveAction;*/
+    public InputAction debugAction;
     private GameObject[] linkGameObjects;
     private Claw clawGameObject;
     private Rigidbody2D clawRigidbody;
@@ -34,6 +34,17 @@ public class ChainBody : MonoBehaviour
 
     void Start()
     {
+        Reset();
+    }
+
+    void Init()
+    {
+        if (chain != null)
+        {
+            // Already initialized
+            return;
+        }
+
         chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio, maxOffsetX);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
@@ -46,6 +57,23 @@ public class ChainBody : MonoBehaviour
         clawGameObject.SetOnCloseCallback(OnCloseClawCallback);
         clawRigidbody = clawGameObject.GetComponent<Rigidbody2D>();
         drumGameObject = transform.Find("drum").gameObject;
+
+        debugAction.Enable();
+        debugAction.performed += ctx =>
+        {
+            var gameState = GameState.GetInstance();
+            gameState.SetStatus(GameStatus.FINISHED);
+        };
+    }
+
+    public void Reset()
+    {
+        Init();
+        clawOpen = true;
+        TryReleaseGrabbedObject();
+        chain.Reset();
+        clawGameObject.transform.position = chain.ClawPosition;
+        clawGameObject.Reset();
     }
 
     void FixedUpdate()
@@ -130,6 +158,11 @@ public class ChainBody : MonoBehaviour
     void OnOpenClawCallback()
     {
         Debug.Log("Claw almost opened");
+        TryReleaseGrabbedObject();
+    }
+
+    void TryReleaseGrabbedObject()
+    {
         if (grabbedObject != null)
         {
             Debug.Log("Released object: " + grabbedObject.name);

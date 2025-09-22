@@ -26,6 +26,7 @@ public class Chain
     private float firstLinkOffsetY; //unnecessary?
     private float linkCollisionRatio = 0.5f;
     private float latestDeltaT = 0f;
+    private Vector2 startPosition;
 
     public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio, float maxOffsetX)
     {
@@ -40,16 +41,32 @@ public class Chain
         this.maxVerticalSpeed = maxVerticalSpeed;
         this.maxHorizontalSpeed = maxHorizontalSpeed;
         this.maxOffsetX = maxOffsetX;
-        topPosition = startPosition;
+        this.startPosition = startPosition;
         maxLength = numLinks * linkLength;
-        length = maxLength / 4f;
         for (int i = 0; i < numLinks; i++)
         {
             links[i] = new ChainLink(startPosition + new Vector2(i * linkLength * 0.1f, 0f));  //-i * linkLength));
         }
+        claw = new ChainLink(links[numLinks - 1].position);
+        Reset();
+    }
+
+    public void Reset()
+    {
+        // Set initial chain length, position, link positions, link last positions
+        //foreach (var link in links)
+        for (int i = 0; i < links.Length; i++)
+        {
+            var link = links[i];
+            link.position = startPosition + new Vector2(i * linkLength * 0.1f, 0f);
+            link.lastPosition = link.position;
+        }
+        topPosition = startPosition;
+        length = maxLength / 4f;
         UpdateActiveLinkCount();
         UpdateTopLinkPosition();
-        claw = new ChainLink(links[numLinks - 1].position);
+        claw.position = links[links.Length - 1].position;
+        claw.lastPosition = claw.position;
     }
 
     public void SetMoveInput(Vector2 input)

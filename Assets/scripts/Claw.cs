@@ -20,12 +20,18 @@ public class Claw : MonoBehaviour
     Action onCloseCallback;
     private float openCompleteThreshold = CompleteThresholdOverflow;
 
+    public void Reset()
+    {
+        isOpen = true;
+        currentAngle = isOpen ? openAngle : 0f;
+        openTween = CreateOpenTween(openAngle, openAngle);
+    }
+
     void Start()
     {
         leftPart = transform.Find("claw_left").gameObject;
         rightPart = transform.Find("claw_right").gameObject;
-        currentAngle = isOpen ? openAngle : 0f;
-        openTween = CreateOpenTween(openAngle, openAngle);
+        Reset();
         grabDetectorCollider = transform.Find("claw_detector").GetComponent<Collider2D>();
     }
 

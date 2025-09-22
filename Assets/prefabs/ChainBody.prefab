@@ -63,31 +63,22 @@ MonoBehaviour:
   linkPrefab1: {fileID: 8142331875750993268, guid: 7f5070d853f18439ab63564df0685d58, type: 3}
   linkPrefab2: {fileID: 3187824890669671531, guid: 42addb56649b3cde08a443ed5ddd0a86, type: 3}
   clawPrefab: {fileID: 9156476033305058551, guid: a0251aa04c2a97366ac72c549d707c5d, type: 3}
-  clickAction:
-    m_Name: Click
+  debugAction:
+    m_Name: Debug
     m_Type: 0
-    m_ExpectedControlType: Vector2
-    m_Id: df088c8f-fccc-46d9-b75e-ae0929aadab3
+    m_ExpectedControlType: 
+    m_Id: 1933ef9d-545f-4d74-a5c2-057da2f98a84
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 1fbbdc7a-22ad-425b-a3a5-e19eb9ee5ec5
-      m_Path: <Pointer>/position
+      m_Id: ca23ceed-a1d6-4547-931c-8c9e86ce72e9
+      m_Path: <Keyboard>/r
       m_Interactions: 
       m_Processors: 
       m_Groups: 
-      m_Action: Click
+      m_Action: Debug
       m_Flags: 0
-    m_Flags: 0
-  moveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b4ae24ce-38f5-451a-af88-b6b4e466418e
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
     m_Flags: 0
 --- !u!114 &-5305926084779110885
 MonoBehaviour:

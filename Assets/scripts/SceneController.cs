@@ -3,12 +3,15 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     GameState gameState;
+    ChainBody chainBody;
 
     void Start()
     {
         gameState = GameState.GetInstance();
         gameState.Subscribe(GameEvent.START, OnStartCallback);
         gameState.Subscribe(GameEvent.RESTART_REQUESTED, OnRestartRequestCallback);
+        gameState.Subscribe(GameEvent.HAPPY_TIME, OnHappyTimeCallback);
+        chainBody = FindAnyObjectByType<ChainBody>();
         StartNewGame();
     }
 
@@ -31,18 +34,25 @@ public class SceneController : MonoBehaviour
         gameState.ReportEvent(GameEvent.HOME_BUTTON_UPDATED);
         gameState.GetStateContents().pauseButtonVisible = true;
         gameState.ReportEvent(GameEvent.PAUSE_BUTTON_UPDATED);
-
         gameState.Reset();
+        var marble = GetMarble();
+        marble.Reset();
+        chainBody.Reset();
         gameState.SetStatus(GameStatus.PLAYING);
         gameState.ReportEvent(GameEvent.START);
         gameState.SetPause(false);
+    }
+
+    Marble GetMarble()
+    {
+        return GameObject.FindFirstObjectByType<Marble>();
     }
 
     private void OnStartCallback()
     {
         Debug.Log("Game started");
     }
-    
+
     private void OnRestartRequestCallback()
     {
         if (!gameState.IsRestartAllowed())
@@ -53,5 +63,10 @@ public class SceneController : MonoBehaviour
 
         Debug.Log("Starting a new game");
         StartNewGame();
+    }
+    
+    private void OnHappyTimeCallback()
+    {
+        Debug.Log("Happy Time!");
     }
 }
