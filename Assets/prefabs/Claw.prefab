@@ -469,7 +469,7 @@ MonoBehaviour:
   offsetAngle: 20
   openDuration: 0.6
   grabOffsetY: -1.35
-  openCompleteFraction: 0.7
+  openCompleteFraction: 0.4
 --- !u!50 &8605956001928453943
 Rigidbody2D:
   serializedVersion: 5

@@ -44,7 +44,7 @@ Introduce new interface IGrabbable?*
   Release
   GetMassRatio (compared to a chain link)
 
-State machine for (grabbing/)ungrabbing.
+State machine for (grabbing/)ungrabbing.*
   Go through (most of) release animation first, then release. Otherwise multiple collisions causes jerkiness during release animation.
 
 Levels
