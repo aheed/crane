@@ -6,11 +6,21 @@ public class Marble : MonoBehaviour, IGrabbable
     public Vector2 startPosition = Vector2.zero;
     private Collider2D ungrabbableCollider;
     private Rigidbody2D rb;
+    private bool grabbed = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Reset();
+    }
+
+    void Update()
+    {
+        if (grabbed)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
     }
 
     public void Reset()
@@ -35,17 +45,30 @@ public class Marble : MonoBehaviour, IGrabbable
         return new Vector3(0, grabOffsetY, 0);
     }
 
+    void UpdateGrabbedLayer()
+    {
+        var ungrabbableObject = transform.Find("marble_visible").gameObject;
+        if (grabbed)
+        {
+            ungrabbableObject.layer = LayerMask.NameToLayer("grabbed");
+        }
+        else
+        {
+            ungrabbableObject.layer = LayerMask.NameToLayer("Default");
+        }
+    }
+
     public void Grab()
     {
-        ungrabbableCollider.enabled = false;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        grabbed = true;
+        UpdateGrabbedLayer();
     }
 
     public void Release(Vector2 velocity)
     {
-        ungrabbableCollider.enabled = true;
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.linearVelocity = velocity;
+        grabbed = false;
+        UpdateGrabbedLayer();
+        rb.linearVelocity = velocity;        
     }
 
     public float GetMassRatio()

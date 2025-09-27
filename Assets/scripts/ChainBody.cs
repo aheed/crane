@@ -59,9 +59,9 @@ public class ChainBody : MonoBehaviour
         debugAction.Enable();
         debugAction.performed += ctx =>
         {
-            /*var gameState = GameState.GetInstance();
-            gameState.SetStatus(GameStatus.FINISHED);*/
-            DropGrabbedObject();
+            var gameState = GameState.GetInstance();
+            gameState.SetStatus(GameStatus.FINISHED);
+            //DropGrabbedObject();
         };
     }
 
@@ -74,8 +74,18 @@ public class ChainBody : MonoBehaviour
         clawGameObject.Reset();
     }
 
-    void FixedUpdate()
+    Vector3 GetGrabbedObjectOffset()
     {
+        return new Vector3(0, clawGameObject.grabOffsetY, 0)
+                + grabbedObjectOffset;
+    }
+
+    void FixedUpdate()
+    {        
+        if (grabbedObject != null)
+        {
+            clawGameObject.transform.position = grabbedObject.transform.position - GetGrabbedObjectOffset();
+        }
         chain.ClawPosition = clawGameObject.transform.position;
         chain.Update(Time.fixedDeltaTime);
         var firstLinkIndex = chain.GetTopLinkIndex();
@@ -102,10 +112,8 @@ public class ChainBody : MonoBehaviour
 
         if (grabbedObject != null)
         {
-            var grabOffset = new Vector3(0, clawGameObject.grabOffsetY, 0)
-                + grabbedObjectOffset;
             grabbedObject.transform.SetPositionAndRotation(
-                clawGameObject.transform.position + grabOffset,
+                clawGameObject.transform.position + GetGrabbedObjectOffset(),
                 clawGameObject.transform.rotation);
         }
     }
