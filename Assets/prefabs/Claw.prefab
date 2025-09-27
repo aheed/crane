@@ -464,11 +464,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4080e2e02e89d8415874c28b59f0f7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openAngle: 15
+  openAngle: 40
   offsetAngle: 20
   openDuration: 0.6
   grabOffsetY: -1.35
-  openCompleteFraction: 0.4
+  openCompleteFraction: 0.6
 --- !u!50 &8605956001928453943
 Rigidbody2D:
   serializedVersion: 5

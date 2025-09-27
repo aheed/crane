@@ -72,12 +72,25 @@ Explosions
   Place bombs at appropriate places to get a reaction
 
 Drop a non-goal marble into a shute to push the goal marble into position
+  Trampolines?
 
 Zombies pushing whatever is placed in front of them.
 
 Drop a marble at speed to make it roll over a bump.
 
 Throw the marble through a basketball hoop
+
+Scale factor:
+  Everything, including the crane, should be smaller?
+    4K resolution is possible
+
+Timer, high score (best time)
+
+Make collapsed empty claw thinner than claw holding marble
+  Makes it possible to make levels with openings narrow enough for empty closed claw to get through, but not with grabbed marble.
+  Set closed angle depending on grabbed object or not.
+  Attempt to pull a ball through a narrow opening should result in dropped ball.
+    Long enough distance between claw and next link in the chain should make the grabbed object lost.
 
 Game idea:
 Scorched Earths
@@ -87,3 +100,11 @@ Problem:
 why does the claw interact with Finish collider (isTrigger)?
   Compare to marble
 
+---
+Claw jaws should be a separate layer, interacting w default
+Marble collider:
+  interact w default and claws when not grabbed
+  interact w default but not claws when grabbed
+  Either have separate sub-gameobject, mutually exclusively active
+    or change layer on grab/release
+  

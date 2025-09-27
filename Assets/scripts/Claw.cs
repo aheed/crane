@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class Claw : MonoBehaviour
@@ -44,7 +45,7 @@ public class Claw : MonoBehaviour
 
     void Update()
     {
-        openTween.Update(Time.deltaTime);
+        openTween?.Update(Time.deltaTime);
     }
 
     void OnTweenComplete()
@@ -80,6 +81,8 @@ public class Claw : MonoBehaviour
         }
     }
 
+    public bool IsOpen() => isOpen;
+
     public void SetOnOpenCallback(Action onOpen)
     {
         onOpenCallback = onOpen;
@@ -111,10 +114,23 @@ public class Claw : MonoBehaviour
         {
             return null;
         }
-        
+
         Debug.Log($"Claw contacting {numContacts} colliders");
+        openTween = null;
 
         // Grab the first one
         return contactingColliders[0].gameObject;
+    }
+
+    public void DropGrabbedObject()
+    {
+        if (isOpen)
+        {
+            // should never happen?
+            return;
+        }
+
+        openTween = CreateOpenTween(currentAngle, -openAngle);
+        openCompleteThreshold = -CompleteThresholdOverflow;
     }
 }

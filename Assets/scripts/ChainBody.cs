@@ -21,14 +21,11 @@ public class ChainBody : MonoBehaviour
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
     public Claw clawPrefab;
-    /*public InputAction clickAction;
-    public InputAction moveAction;*/
     public InputAction debugAction;
     private GameObject[] linkGameObjects;
     private Claw clawGameObject;
     private Rigidbody2D clawRigidbody;
     private GameObject drumGameObject;
-    private bool clawOpen = true;
     private GameObject grabbedObject = null;
     private Vector3 grabbedObjectOffset;
 
@@ -61,15 +58,15 @@ public class ChainBody : MonoBehaviour
         debugAction.Enable();
         debugAction.performed += ctx =>
         {
-            var gameState = GameState.GetInstance();
-            gameState.SetStatus(GameStatus.FINISHED);
+            /*var gameState = GameState.GetInstance();
+            gameState.SetStatus(GameStatus.FINISHED);*/
+            DropGrabbedObject();
         };
     }
 
     public void Reset()
     {
         Init();
-        clawOpen = true;
         TryReleaseGrabbedObject();
         chain.Reset();
         clawGameObject.transform.position = chain.ClawPosition;
@@ -96,7 +93,6 @@ public class ChainBody : MonoBehaviour
         clawRigidbody.linearVelocity = Vector2.zero;
 
         UpdateLinkVisibility(); //expensive?
-        clawGameObject.SetOpen(clawOpen);
 
         var topPos = linkGameObjects[firstLinkIndex].transform.position;
         drumGameObject.transform.position = new Vector3(topPos.x + drumOffsetX, transform.position.y + drumOffsetY, 0);
@@ -148,7 +144,7 @@ public class ChainBody : MonoBehaviour
                 gameState.ReportEvent(GameEvent.RESTART_REQUESTED);
                 break;
             case GameStatus.PLAYING:
-                clawOpen = !clawOpen;
+                clawGameObject.SetOpen(!clawGameObject.IsOpen());
                 break;
             default:
                 break;
@@ -184,5 +180,11 @@ public class ChainBody : MonoBehaviour
             Debug.Log("Grabbed object: " + grabbedObject.name);
             grabbedObjectOffset = grabbable.GetGrabOffset();
         }
+    }
+
+    void DropGrabbedObject()
+    {
+        clawGameObject.DropGrabbedObject();
+        TryReleaseGrabbedObject();
     }
 }
