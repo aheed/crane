@@ -18,6 +18,8 @@ public class Chain
     public float maxVerticalSpeed = 5f;
     public float maxHorizontalSpeed = 5f;
     public float maxOffsetX = 5f;
+    public float maxStrain = 0.1f;
+    public Action onStrainExceeded;
     private Vector2 currentMoveInput = Vector2.zero;
     private float length;
     private float maxLength;
@@ -28,7 +30,7 @@ public class Chain
     private float latestDeltaT = 0f;
     private Vector2 startPosition;
 
-    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio, float maxOffsetX)
+    public Chain(int numLinks, Vector2 startPosition, float linkLength, float simTimeFactor, float jakobsenIterations, float speedRetention, float clawMassRatio, float clawSpeedRetention, float maxVerticalSpeed, float maxHorizontalSpeed, float linkCollisionRatio, float maxOffsetX, float maxStrain, Action onStrainExceeded)
     {
         links = new ChainLink[numLinks];
         this.linkLength = linkLength;
@@ -42,6 +44,8 @@ public class Chain
         this.maxHorizontalSpeed = maxHorizontalSpeed;
         this.maxOffsetX = maxOffsetX;
         this.startPosition = startPosition;
+        this.maxStrain = maxStrain;
+        this.onStrainExceeded = onStrainExceeded;
         maxLength = numLinks * linkLength;
         for (int i = 0; i < numLinks; i++)
         {
@@ -108,10 +112,16 @@ public class Chain
         claw.lastPosition = clawCurrentPosition;
 
         var collisions = GetCollisions();
+        bool strainExceeded = false;
         for (int j = 0; j < jakobsenIterations; j++)
         {
-            ConstrainLinks();
+            strainExceeded |= ConstrainLinks();
             ApplyCollisions(collisions);
+        }
+
+        if (strainExceeded)
+        {
+            onStrainExceeded?.Invoke();
         }
     }
 
@@ -201,8 +211,9 @@ public class Chain
         return links.Length - activeLinks;
     }
 
-    void ConstrainLinks()
+    bool ConstrainLinks()
     {
+        bool strainExceeded = false;
         var firstLinkPos = links[GetTopLinkIndex()].position;
         for (int i = GetTopLinkIndex() + 1; i < links.Length; i++)
         {
@@ -225,8 +236,13 @@ public class Chain
         var lastDirection = (lastLink.position - claw.position).normalized;
         float lastDist = Vector2.Distance(claw.position, lastLink.position);
         float lastDifference = lastDist - linkLength;
+        if (lastDifference > maxStrain * linkLength)
+        {
+            strainExceeded = true;
+        }
         claw.position += lastDirection * lastDifference * (1f / (1f + clawMassRatio));
         lastLink.position -= lastDirection * lastDifference * (clawMassRatio / (1f + clawMassRatio));
+        return strainExceeded;
     }
 
     /*void OrientLinks()

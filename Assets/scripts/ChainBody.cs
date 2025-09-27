@@ -17,6 +17,7 @@ public class ChainBody : MonoBehaviour
     public float drumRadius = 1f;
     public float linkCollisionRatio = 0.5f;
     public float maxOffsetX = 6f;
+    public float maxStrain = 0.1f;
     private Chain chain;
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
@@ -42,7 +43,7 @@ public class ChainBody : MonoBehaviour
             return;
         }
 
-        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio, maxOffsetX);
+        chain = new Chain(numLinks, transform.position, linkLength, simTimeFactor, jakobsenIterations, speedRetention, clawMassRatio, clawSpeedRetention, maxVerticalSpeed, maxHorizontalSpeed, linkCollisionRatio, maxOffsetX, maxStrain, OnChainStrainExceeded);
         linkGameObjects = new GameObject[numLinks];
         for (int i = 0; i < numLinks; i++)
         {
@@ -186,5 +187,11 @@ public class ChainBody : MonoBehaviour
     {
         clawGameObject.DropGrabbedObject();
         TryReleaseGrabbedObject();
+    }
+
+    void OnChainStrainExceeded()
+    {
+        Debug.Log("Chain strain exceeded!!!!!!!!!!!!!!!!!!!!!!!!");
+        DropGrabbedObject();
     }
 }
