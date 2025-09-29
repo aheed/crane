@@ -110,3 +110,8 @@ Marble collider:
   
 Level scaling:
   Frame should adapt to the main camera's zoom level. Use view-to-screen conversion.
+
+More for-editor code:
+  RoundedBar: make the circular ends match bar length
+  Marble: Make starting position match current position
+
