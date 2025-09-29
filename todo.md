@@ -101,10 +101,12 @@ why does the claw interact with Finish collider (isTrigger)?
   Compare to marble
 
 ---
-Claw jaws should be a separate layer, interacting w default
+Claw jaws should be a separate layer, interacting w default*
 Marble collider:
   interact w default and claws when not grabbed
   interact w default but not claws when grabbed
   Either have separate sub-gameobject, mutually exclusively active
     or change layer on grab/release
   
+Level scaling:
+  Frame should adapt to the main camera's zoom level. Use view-to-screen conversion.
