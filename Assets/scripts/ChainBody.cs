@@ -196,22 +196,10 @@ public class ChainBody : MonoBehaviour
 
     void OnMarbleCollisionCallback(Collision2D c)
     {
-        /*string cps = "";
-        foreach (var cpointIter in c.contacts)
-        {
-            cps += $" pos={cpointIter.point} norm={cpointIter.normal} {cpointIter.relativeVelocity}";
-        }
-        Debug.Log($"Claw hit a marble! {c.contacts.Length} contact points: {cps}");
-        */
-
         // Assume all contact points are similar, just use the first one
         var contactPoint = c.contacts[0];
 
-        var cv = chain.GetClawVelocity();
-        var dotProd = Vector2.Dot(cv, -contactPoint.normal);
-
-        Debug.Log($"Claw hit a marble! {contactPoint} contact points: {dotProd}");
-
+        var dotProd = Vector2.Dot(chain.GetClawVelocity(), -contactPoint.normal);
         if (dotProd > 0f)
         {
             c.rigidbody?.AddForceAtPosition(-contactPoint.normal * impulseFactor * dotProd, contactPoint.point, ForceMode2D.Impulse);
