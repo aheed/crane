@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 
 public class Claw : MonoBehaviour
@@ -19,6 +18,7 @@ public class Claw : MonoBehaviour
     Collider2D grabDetectorCollider;
     Action onOpenCallback;
     Action onCloseCallback;
+    Action<Collision2D> onMarbleCollisionCallback;
     private float openCompleteThreshold = CompleteThresholdOverflow;
 
     public void Reset()
@@ -93,12 +93,21 @@ public class Claw : MonoBehaviour
         onCloseCallback = onClose;
     }
 
+    public void SetOnMarbleCollisionCallback(Action<Collision2D> onMarbleCollision)
+    {
+        onMarbleCollisionCallback = onMarbleCollision;
+    }
+
     // Print on collision with another object
     void OnCollisionEnter2D(Collision2D c)
     {
         //Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
         //Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
         //Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
+        if (c.gameObject.name.StartsWith("marble"))
+        {
+            onMarbleCollisionCallback?.Invoke(c);            
+        }
     }
 
     void OnCollisionExit2D(Collision2D c)

@@ -18,6 +18,7 @@ public class ChainBody : MonoBehaviour
     public float linkCollisionRatio = 0.5f;
     public float maxOffsetX = 6f;
     public float maxStrain = 0.1f;
+    public float impulseFactor = 2f;
     private Chain chain;
     public GameObject linkPrefab1;
     public GameObject linkPrefab2;
@@ -53,6 +54,7 @@ public class ChainBody : MonoBehaviour
         clawGameObject = Instantiate(clawPrefab, chain.links[numLinks - 1].position, Quaternion.identity, transform);
         clawGameObject.SetOnOpenCallback(OnOpenClawCallback);
         clawGameObject.SetOnCloseCallback(OnCloseClawCallback);
+        clawGameObject.SetOnMarbleCollisionCallback(OnMarbleCollisionCallback);
         clawRigidbody = clawGameObject.GetComponent<Rigidbody2D>();
         drumGameObject = transform.Find("drum").gameObject;
 
@@ -188,6 +190,18 @@ public class ChainBody : MonoBehaviour
             grabbable.Grab();
             Debug.Log("Grabbed object: " + grabbedObject.name);
             grabbedObjectOffset = grabbable.GetGrabOffset();
+        }
+    }
+
+    void OnMarbleCollisionCallback(Collision2D c)
+    {
+        // Assume all contact points are similar, just use the first one
+        var contactPoint = c.contacts[0];
+
+        var dotProd = Vector2.Dot(chain.GetClawVelocity(), -contactPoint.normal);
+        if (dotProd > 0f)
+        {
+            c.rigidbody?.AddForceAtPosition(-contactPoint.normal * impulseFactor * dotProd, contactPoint.point, ForceMode2D.Impulse);
         }
     }
 
