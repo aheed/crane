@@ -1,5 +1,10 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
+[ExecuteAlways]
+[DisallowMultipleComponent]
 public class Marble : MonoBehaviour, IGrabbable
 {
     public float grabOffsetY = 0.5f;
@@ -68,11 +73,43 @@ public class Marble : MonoBehaviour, IGrabbable
     {
         grabbed = false;
         UpdateGrabbedLayer();
-        rb.linearVelocity = velocity;        
+        rb.linearVelocity = velocity;
     }
 
     public float GetMassRatio()
     {
         return 10.0f;
     }
+
+    [ContextMenu("Set Start Position")]
+    public void SetStartPosition()
+    {
+#if UNITY_EDITOR
+        Undo.RegisterFullObjectHierarchyUndo(gameObject, "Set Start Position");
+        startPosition = transform.position;
+        PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+        PrefabUtility.RecordPrefabInstancePropertyModifications(transform);
+        EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(transform);
+#endif        
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Marble))]
+class MarbleEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        using (new EditorGUI.DisabledScope(Application.isPlaying))
+        {
+            GUILayout.Space(6);
+            if (GUILayout.Button("Set Start Position"))
+                ((Marble)target).SetStartPosition();
+        }
+    }
+}
+#endif
+

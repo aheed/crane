@@ -111,7 +111,27 @@ Marble collider:
 Level scaling:
   Frame should adapt to the main camera's zoom level. Use view-to-screen conversion.
 
-More for-editor code:
+More for-editor code, with inspector buttons:
   RoundedBar: make the circular ends match bar length
-  Marble: Make starting position match current position
+  Marble: Make starting position match current position*
+
+problem:
+  why does the marble not bounce off a collision with claw? It moves a little but picks up no velocity.
+  Probably because the claw's velocity is zero.
+    Yes. Bouncing works correctly when a moving marble runs into the claw.
+      physics.contactmodifyevent would be perfect to fix this but is not available in the 2D physics engine.
+      A workaround: add an impulse to the marble in claw.OnCollisionEnter2D.
+        The impulse should be based on the claw velocity only.
+          Claw velocity can be approximated by the chain class.
+
+Features:
+  The claw follows a grabbed (or grabbing, like a crate) moving object.
+    Requires the claw to change orientation?
+    Moving crate requires no changes to the physics?
+      Pater noster style mechanism?
+        "Switches" of some sort to change pater noster/conveyor belt direction
+          Operated by dropping marble in some container
+
+  Marble dispenser
+
 

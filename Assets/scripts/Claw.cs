@@ -11,6 +11,7 @@ public class Claw : MonoBehaviour
     public float openDuration = 0.6f;
     public float grabOffsetY = -0.2f;
     public float openCompleteFraction = 0.9f;
+    public float impulseFactor = 2f;
     bool isOpen = true;
     GameObject leftPart;
     GameObject rightPart;
@@ -99,6 +100,19 @@ public class Claw : MonoBehaviour
         //Debug.Log($"Claw collision with {c.gameObject.name} {c.collider.name} {c.otherCollider.name}");
         //Debug.Log($"this body: {c.rigidbody?.name}, this collider: {c.collider?.name}");
         //Debug.Log($"other body: {c.otherRigidbody?.name}, other collider: {c.otherCollider?.name}");
+        if (c.gameObject.name.StartsWith("marble"))
+        {
+            string cps = "";
+            foreach (var cpointIter in c.contacts)
+            {
+                cps += $" pos={cpointIter.point} norm={cpointIter.normal} {cpointIter.relativeVelocity}";
+            }
+            Debug.Log($"Claw hit a marble! {c.contacts.Length} contact points: {cps}");
+
+            // Assume all contact points are similar, just use the first one
+            var contactPoint = c.contacts[0];
+            c.rigidbody?.AddForceAtPosition(-contactPoint.normal * impulseFactor, contactPoint.point, ForceMode2D.Impulse);
+        }
     }
 
     void OnCollisionExit2D(Collision2D c)
