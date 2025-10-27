@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7340885165747289380}
+  - component: {fileID: 4479321157142754341}
   m_Layer: 0
   m_Name: RoundedBar
   m_TagString: Untagged
@@ -34,6 +35,18 @@ Transform:
   - {fileID: 4518729167381011102}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4479321157142754341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440268752041769235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a7d3b3fc7120656aede14e2fc1aed0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &518003725083033501
 PrefabInstance:
   m_ObjectHideFlags: 0
