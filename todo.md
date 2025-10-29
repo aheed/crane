@@ -18,10 +18,10 @@ Potential problem:
 Edge colliders do not collide with other edge colliders
 
 
-claw detector and grabable objects:
+claw detector and grabbable objects:
  separate layer: grab
-   grabable object is a "shadow" of the visible object with same geometry, separate layer
-     => jaws and chain will interact with the visible object, detector only with grabable "shadow"
+   grabbable object is a "shadow" of the visible object with same geometry, separate layer
+     => jaws and chain will interact with the visible object, detector only with grabbable "shadow"
        Possible to achieve the same with collider layer overrides?
  rigibody2D
    necessary for the claw detector, not for the grabbable object
@@ -108,14 +108,14 @@ Marble collider:
   Either have separate sub-gameobject, mutually exclusively active
     or change layer on grab/release
   
-Level scaling:
+Level scaling:*
   Frame should adapt to the main camera's zoom level. Use view-to-screen conversion.
 
 More for-editor code, with inspector buttons:
-  RoundedBar: make the circular ends match bar length
+  RoundedBar: make the circular ends match bar length*
   Marble: Make starting position match current position*
 
-problem:
+problem:*
   why does the marble not bounce off a collision with claw? It moves a little but picks up no velocity.
   Probably because the claw's velocity is zero.
     Yes. Bouncing works correctly when a moving marble runs into the claw.

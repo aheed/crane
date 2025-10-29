@@ -12,11 +12,13 @@ public class Marble : MonoBehaviour, IGrabbable
     private Collider2D ungrabbableCollider;
     private Rigidbody2D rb;
     private bool grabbed = false;
+    private Transform glareTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Reset();
+        glareTransform = transform.Find("marble_glare");
     }
 
     void Update()
@@ -25,6 +27,11 @@ public class Marble : MonoBehaviour, IGrabbable
         {
             rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
+        }
+
+        if (glareTransform)
+        {
+            glareTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
     }
 
